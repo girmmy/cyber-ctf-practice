@@ -501,10 +501,16 @@ async function sha256hex(str) {
 }
 
 /* ── Answer checking ────────────────────────────────────── */
+const wrongCooldowns = {}; // qid → countdown interval id while locked
+const WRONG_TIMEOUT  = 5;  // seconds
+
 async function doSubmit(qid, inp) {
   if (!user) return;
+  if (wrongCooldowns[qid]) return; // still cooling down
+
   const dr  = document.getElementById('dr-' + qid);
   const fb  = dr.querySelector('.feedback');
+  const btn = dr.querySelector('.btn-submit[data-submit="' + qid + '"]');
   const val = (inp.value || '').trim();
 
   if (!val) { setFb(fb, 'Please enter a flag.', ''); return; }
@@ -525,8 +531,23 @@ async function doSubmit(qid, inp) {
     confetti();
     checkDone();
   } else {
-    setFb(fb, '❌ Incorrect — try again!', 'incorrect');
-    inp.select();
+    inp.disabled = true;
+    btn.disabled = true;
+    let remaining = WRONG_TIMEOUT;
+    setFb(fb, '❌ Incorrect — wait ' + remaining + 's before trying again.', 'incorrect');
+    wrongCooldowns[qid] = setInterval(function () {
+      remaining--;
+      if (remaining <= 0) {
+        clearInterval(wrongCooldowns[qid]);
+        delete wrongCooldowns[qid];
+        inp.disabled = false;
+        btn.disabled = false;
+        setFb(fb, '❌ Incorrect — try again!', 'incorrect');
+        inp.select();
+      } else {
+        setFb(fb, '❌ Incorrect — wait ' + remaining + 's before trying again.', 'incorrect');
+      }
+    }, 1000);
   }
 }
 function setFb(el, msg, cls) {
@@ -701,19 +722,43 @@ function confetti(n) {
 }
 
 /* ── Modal helpers ──────────────────────────────────────── */
-function showModal(id) { document.getElementById(id).classList.remove('hidden'); }
+function showModal(id) {
+  document.getElementById(id).classList.remove('hidden');
+  if (id === 'modal-user') {
+    document.getElementById('user-confirm-box').classList.add('hidden');
+    document.getElementById('user-entry-box').classList.remove('hidden');
+  }
+}
 function hideModal(id) { document.getElementById(id).classList.add('hidden'); }
 
 /* ── Bind static events ─────────────────────────────────── */
 function bindEvents() {
-  /* Username submit */
-  el('user-submit').addEventListener('click', function () {
+  /* Username submit — show confirmation step first */
+  function showNameConfirm() {
     const v = el('user-input').value.trim();
-    if (v) loginUser(v);
-    else el('user-input').focus();
-  });
+    if (!v) { el('user-input').focus(); return; }
+    el('user-confirm-name').textContent = '"' + v + '"';
+    el('user-entry-box').classList.add('hidden');
+    el('user-confirm-box').classList.remove('hidden');
+  }
+  el('user-submit').addEventListener('click', showNameConfirm);
   el('user-input').addEventListener('keydown', function (e) {
-    if (e.key === 'Enter') el('user-submit').click();
+    if (e.key === 'Enter') showNameConfirm();
+  });
+
+  /* Confirmation — back */
+  el('user-confirm-back').addEventListener('click', function () {
+    el('user-confirm-box').classList.add('hidden');
+    el('user-entry-box').classList.remove('hidden');
+    el('user-input').focus();
+  });
+
+  /* Confirmation — proceed */
+  el('user-confirm-go').addEventListener('click', function () {
+    const v = el('user-input').value.trim();
+    el('user-confirm-box').classList.add('hidden');
+    el('user-entry-box').classList.remove('hidden');
+    if (v) loginUser(v);
   });
 
   /* Leaderboard */

@@ -335,7 +335,7 @@
 
 <!-- ═══ Username Modal ══════════════════════════════════════ -->
 <div id="modal-user" class="modal-overlay" role="dialog" aria-modal="true" aria-label="Enter your name">
-  <div class="modal-box">
+  <div class="modal-box" id="user-entry-box">
     <div style="font-size:3rem;margin-bottom:.4rem">💖</div>
     <h2>Welcome to Barbie's<br>Cyber Dreamhouse!</h2>
     <p>Enter your name to start. Progress is saved per player — multiple people can play on the same device!</p>
@@ -343,6 +343,18 @@
     <br>
     <button class="btn-primary" id="user-submit">Let's Go! ✨</button>
     <p class="modal-note">Tip: use the same name to resume your session</p>
+  </div>
+  <!-- Confirmation step -->
+  <div class="modal-box hidden" id="user-confirm-box">
+    <div style="font-size:3rem;margin-bottom:.4rem">⚠️</div>
+    <h2>Confirm Your Name</h2>
+    <p>You entered:</p>
+    <p id="user-confirm-name" style="font-size:1.3rem;font-weight:700;word-break:break-all;margin:.4rem 0 1rem"></p>
+    <p style="color:#c71585;font-weight:600;font-size:.95rem">Remember this <em>exact</em> spelling and capitalization — you'll need it to resume your session later!</p>
+    <div style="display:flex;gap:.6rem;justify-content:center;margin-top:1.2rem">
+      <button class="btn-outline-dark" id="user-confirm-back">← Change Name</button>
+      <button class="btn-primary" id="user-confirm-go">That's me! Start ✨</button>
+    </div>
   </div>
 </div>
 
