@@ -1,0 +1,355 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Answer Key — Barbie's Cyber Dreamhouse CTF</title>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body{
+      font-family:'Nunito',sans-serif;
+      background:linear-gradient(160deg,#ff69b4 0%,#ff1493 40%,#c71585 80%,#8b0057 100%);
+      min-height:100vh; color:white; padding:2rem 1rem;
+    }
+    /* ── Lock screen ───────────────────────────────────── */
+    #lock-screen{
+      display:flex;align-items:center;justify-content:center;min-height:80vh;
+    }
+    .lock-box{
+      background:white;color:#3d0026;border-radius:1.5rem;padding:2.5rem 2rem;
+      max-width:420px;width:100%;text-align:center;
+      box-shadow:0 20px 60px rgba(199,21,133,.45);
+    }
+    .lock-box h1{font-family:'Pacifico',cursive;color:#ff1493;font-size:1.7rem;margin-bottom:.4rem}
+    .lock-box p{color:#666;font-size:.9rem;margin:.4rem 0 1.1rem;line-height:1.55}
+    .lock-box input{
+      width:100%;padding:.7rem 1rem;font-size:1rem;
+      border:2px solid #ffb3d9;border-radius:.75rem;
+      font-family:'Nunito',sans-serif;outline:none;color:#3d0026;
+      transition:border-color .2s;
+    }
+    .lock-box input:focus{border-color:#ff1493}
+    .btn{
+      display:inline-block;margin-top:.7rem;
+      background:linear-gradient(135deg,#ff1493,#c71585);
+      color:white;border:none;padding:.7rem 1.75rem;
+      font-size:.95rem;font-family:'Nunito',sans-serif;font-weight:800;
+      border-radius:2rem;cursor:pointer;
+      box-shadow:0 4px 15px rgba(255,20,147,.35);
+      transition:transform .15s,box-shadow .15s;
+    }
+    .btn:hover{transform:translateY(-2px);box-shadow:0 6px 22px rgba(255,20,147,.5)}
+    .err-msg{color:#e11d48;font-size:.82rem;font-weight:700;min-height:1.2em;margin-top:.5rem}
+
+    /* ── Answer key page ───────────────────────────────── */
+    #key-page{display:none}
+    .page-header{text-align:center;margin-bottom:2rem}
+    .page-header h1{font-family:'Pacifico',cursive;font-size:2rem;text-shadow:2px 3px 8px rgba(0,0,0,.3)}
+    .page-header p{opacity:.85;font-size:.9rem;margin-top:.35rem}
+    .back-btn{
+      display:inline-block;margin-top:1rem;
+      background:rgba(255,255,255,.15);color:white;
+      border:2px solid rgba(255,255,255,.35);padding:.45rem 1.2rem;
+      border-radius:2rem;text-decoration:none;font-weight:700;font-size:.85rem;
+      transition:background .2s;
+    }
+    .back-btn:hover{background:rgba(255,255,255,.25)}
+
+    /* ── Category sections ─────────────────────────────── */
+    .cat-section{
+      background:rgba(255,255,255,.12);border-radius:1.1rem;
+      padding:1.25rem;margin-bottom:1.25rem;max-width:900px;margin-left:auto;margin-right:auto;
+    }
+    .cat-section:last-of-type{margin-bottom:0}
+    .cat-header{
+      display:flex;align-items:center;gap:.6rem;
+      margin-bottom:.9rem;padding-bottom:.6rem;
+      border-bottom:1px solid rgba(255,255,255,.2);
+    }
+    .cat-dot{width:12px;height:12px;border-radius:50%;flex-shrink:0}
+    .cat-header h2{font-size:1.05rem;font-weight:800}
+
+    /* ── Answer row ────────────────────────────────────── */
+    .answer-row{
+      display:grid;grid-template-columns:2rem 1fr 1fr;gap:.5rem .75rem;
+      align-items:start;padding:.55rem .4rem;
+      border-radius:.5rem;
+      transition:background .15s;
+    }
+    .answer-row:hover{background:rgba(255,255,255,.08)}
+    .answer-row:not(:last-child){border-bottom:1px solid rgba(255,255,255,.1)}
+    .qnum{font-weight:800;opacity:.6;font-size:.85rem;padding-top:.05rem}
+    .qtitle{font-weight:700;font-size:.88rem;line-height:1.4}
+    .qflag{
+      font-family:monospace;font-size:.82rem;
+      background:rgba(0,0,0,.22);padding:.25rem .55rem;
+      border-radius:.4rem;word-break:break-all;color:#fde68a;
+      line-height:1.5;
+    }
+    .qhint{
+      grid-column:2/-1;font-size:.78rem;opacity:.7;
+      line-height:1.5;padding-top:.1rem;
+    }
+
+    /* ── Print button ──────────────────────────────────── */
+    .print-btn{
+      background:rgba(255,255,255,.15);color:white;
+      border:2px solid rgba(255,255,255,.35);padding:.45rem 1.2rem;
+      border-radius:2rem;font-size:.85rem;font-family:'Nunito',sans-serif;
+      font-weight:700;cursor:pointer;margin-left:.5rem;
+      transition:background .2s;
+    }
+    .print-btn:hover{background:rgba(255,255,255,.25)}
+
+    @media(max-width:580px){
+      .answer-row{grid-template-columns:2rem 1fr}
+      .qflag{grid-column:1/-1}
+      .qhint{grid-column:1/-1}
+    }
+    @media print{
+      body{background:white!important;color:#000}
+      .page-header p,.back-btn,.print-btn{display:none}
+      .cat-section{background:#f9f0f5!important;border:1px solid #ddd}
+      .qflag{background:#eee!important;color:#000!important}
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══ Lock Screen ═══════════════════════════════════════ -->
+<div id="lock-screen">
+  <div class="lock-box">
+    <div style="font-size:2.5rem;margin-bottom:.4rem">🔑</div>
+    <h1>Answer Key</h1>
+    <p>This page is for instructors and competition organizers.<br>
+    Enter the admin password to view all flags and solutions.</p>
+    <input type="password" id="pwd-input" placeholder="Admin password…" autocomplete="off" />
+    <br>
+    <button class="btn" id="pwd-submit">Unlock 🔓</button>
+    <div class="err-msg" id="err-msg"></div>
+  </div>
+</div>
+
+<!-- ═══ Answer Key Page ════════════════════════════════════ -->
+<div id="key-page">
+  <div class="page-header">
+    <h1>💖 Barbie's Cyber Dreamhouse — Answer Key 💖</h1>
+    <p>All 20 flags, hints, and solve methods for instructors &amp; organizers</p>
+    <a href="index.html" class="back-btn">← Back to CTF</a>
+    <button class="print-btn" onclick="window.print()">🖨️ Print</button>
+  </div>
+
+  <!-- GENERAL SKILLS -->
+  <div class="cat-section">
+    <div class="cat-header">
+      <div class="cat-dot" style="background:#FF85A1"></div>
+      <h2>🎀 General Skills (Questions 1 – 4)</h2>
+    </div>
+
+    <div class="answer-row">
+      <div class="qnum">01</div>
+      <div class="qtitle">Barbie's Dream Diary</div>
+      <div class="qflag">CTF{b4rb13_l0g_d14ry_r3c0v3r3d}</div>
+      <div class="qhint">File: barbie_diary.txt — Find and concatenate 5 flag fragments hidden among diary entries.</div>
+    </div>
+    <div class="answer-row">
+      <div class="qnum">02</div>
+      <div class="qtitle">Ken's Java Vault</div>
+      <div class="qflag">CTF{s0urc3_c0d3_1s_4n_0p3n_b00k}</div>
+      <div class="qhint">File: ken_vault.txt (Java) — Password is hardcoded in the checkPassword() method.</div>
+    </div>
+    <div class="answer-row">
+      <div class="qnum">03</div>
+      <div class="qtitle">Base64 Beach Party</div>
+      <div class="qflag">CTF{b4s364_m4k30v3r_c0mpl3t3}</div>
+      <div class="qhint">Inline — Decode Q1RGe2I0czM2NF9tNGszMHYzcl9jMG1wbDN0M30= from Base64.</div>
+    </div>
+    <div class="answer-row">
+      <div class="qnum">04</div>
+      <div class="qtitle">Hex Heels</div>
+      <div class="qflag">CTF{h3x_h33ls_4r3_f4bul0us}</div>
+      <div class="qhint">Inline — Decode hex string 43 54 46 7b 68 33 78 … to ASCII.</div>
+    </div>
+  </div>
+
+  <!-- CRYPTOGRAPHY -->
+  <div class="cat-section">
+    <div class="cat-header">
+      <div class="cat-dot" style="background:#D891EF"></div>
+      <h2>🔐 Cryptography (Questions 5 – 8)</h2>
+    </div>
+
+    <div class="answer-row">
+      <div class="qnum">05</div>
+      <div class="qtitle">Pink Caesar</div>
+      <div class="qflag">CTF{r0t13_1s_s0_l4st_s34s0n}</div>
+      <div class="qhint">Inline — ROT13 decode of PGS{e0g13_1f_f0_y4fg_f34f0a}.</div>
+    </div>
+    <div class="answer-row">
+      <div class="qnum">06</div>
+      <div class="qtitle">Barbie's Mirror Code</div>
+      <div class="qflag">CTF{atbash_is_glamorous}</div>
+      <div class="qhint">Inline — Atbash decode of XGU{zgyzsh_rh_toznlilfh}.</div>
+    </div>
+    <div class="answer-row">
+      <div class="qnum">07</div>
+      <div class="qtitle">Vigenere Vanity</div>
+      <div class="qflag">CTF{v1g3n3r3_k3y_b4rb13}</div>
+      <div class="qhint">File: vigenere_msg.txt — Vigenere decode of DTW{w1o3r3s3_k3p_c4zf13} with key BARBIE.</div>
+    </div>
+    <div class="answer-row">
+      <div class="qnum">08</div>
+      <div class="qtitle">Hash Bash</div>
+      <div class="qflag">CTF{hotpink}</div>
+      <div class="qhint">File: hash_challenge.txt — MD5 hash 2ed02e792f8ecd95b6570b687274afeb cracks to "hotpink".</div>
+    </div>
+  </div>
+
+  <!-- FORENSICS -->
+  <div class="cat-section">
+    <div class="cat-header">
+      <div class="cat-dot" style="background:#93C5FD"></div>
+      <h2>🔍 Forensics (Questions 9 – 12)</h2>
+    </div>
+
+    <div class="answer-row">
+      <div class="qnum">09</div>
+      <div class="qtitle">Barbie's Hidden Selfie</div>
+      <div class="qflag">CTF{h1dd3n_1n_1m4g3_92f08d7c}</div>
+      <div class="qhint">File: hidden_image.jpg — Use steghide / binwalk / strings to extract hidden data.</div>
+    </div>
+    <div class="answer-row">
+      <div class="qnum">10</div>
+      <div class="qtitle">Ken's Corrupted Photo</div>
+      <div class="qflag">CTF{H0tter_thAn_H0T}</div>
+      <div class="qhint">File: Palace.jpg — Fix JPEG magic bytes (FF D8 FF) in a hex editor to restore the image.</div>
+    </div>
+    <div class="answer-row">
+      <div class="qnum">11</div>
+      <div class="qtitle">Barbie's Git Lab</div>
+      <div class="qflag">CTF{@sk_th3_1nt3rn_b64c4705}</div>
+      <div class="qhint">File: problem_5.zip — Use git log / git show to find the bad commit and its author.</div>
+    </div>
+    <div class="answer-row">
+      <div class="qnum">12</div>
+      <div class="qtitle">Barbie's Time Capsule</div>
+      <div class="qflag">CTF{t1m3m@ch1n3_b476ca06}</div>
+      <div class="qhint">File: problem_6.zip — Travel back through git history with git log --all and git checkout.</div>
+    </div>
+  </div>
+
+  <!-- WEB -->
+  <div class="cat-section">
+    <div class="cat-header">
+      <div class="cat-dot" style="background:#86EFAC"></div>
+      <h2>🌐 Web Exploitation (Questions 13 – 15)</h2>
+    </div>
+
+    <div class="answer-row">
+      <div class="qnum">13</div>
+      <div class="qtitle">Barbie's Secret Source</div>
+      <div class="qflag">CTF{v13w_s0urc3_l1k3_4_pr0}</div>
+      <div class="qhint">File: dream_website.html — Flag is in an HTML comment visible via View Page Source (Ctrl+U).</div>
+    </div>
+    <div class="answer-row">
+      <div class="qnum">14</div>
+      <div class="qtitle">Ken's Cookie Jar</div>
+      <div class="qflag">CTF{c00k13s_4r3_sw33t_b4rb13}</div>
+      <div class="qhint">File: cookie_challenge.html — Set cookie document.cookie="isAdmin=true" in DevTools console then click Check.</div>
+    </div>
+    <div class="answer-row">
+      <div class="qnum">15</div>
+      <div class="qtitle">Barbie's JS Wardrobe</div>
+      <div class="qflag">CTF{j4v4scr1pt_0bfusc4t10n}</div>
+      <div class="qhint">File: wardrobe.js — Decode char code array via String.fromCharCode(...barbieSecret) in browser console.</div>
+    </div>
+  </div>
+
+  <!-- REVERSING -->
+  <div class="cat-section">
+    <div class="cat-header">
+      <div class="cat-dot" style="background:#FDBA74"></div>
+      <h2>⚙️ Reversing (Questions 16 – 18)</h2>
+    </div>
+
+    <div class="answer-row">
+      <div class="qnum">16</div>
+      <div class="qtitle">Barbie's Python Puzzle</div>
+      <div class="qflag">CTF{pyth0n_r3v3rs3d}</div>
+      <div class="qhint">File: barbie_puzzle.py — Reverse [ord(c)+1 for c in s] == expected by computing chr(x-1) for each value.</div>
+    </div>
+    <div class="answer-row">
+      <div class="qnum">17</div>
+      <div class="qtitle">Rockstar Barbie</div>
+      <div class="qflag">CTF{BONJOVI}</div>
+      <div class="qhint">File: lyrics.txt — Run the Rockstar language program at codewithrockstar.com/online. Output: BONJOVI.</div>
+    </div>
+    <div class="answer-row">
+      <div class="qnum">18</div>
+      <div class="qtitle">Ken's Assembly</div>
+      <div class="qflag">CTF{126}</div>
+      <div class="qhint">File: ken_assembly.txt — Trace: rax=10+5=15, rcx=15, rax=2×15=30, rax=26, push; rax=100, pop rbx=26, rax=100+26=126.</div>
+    </div>
+  </div>
+
+  <!-- BINARY EXPLOITATION -->
+  <div class="cat-section">
+    <div class="cat-header">
+      <div class="cat-dot" style="background:#F87171"></div>
+      <h2>💣 Binary Exploitation (Questions 19 – 20)</h2>
+    </div>
+
+    <div class="answer-row">
+      <div class="qnum">19</div>
+      <div class="qtitle">Barbie's Buffer</div>
+      <div class="qflag">CTF{buff3r_0v3rfl0w_4_b4rb13}</div>
+      <div class="qhint">File: buffer_barbie.c — Vulnerability: buffer overflow via strcpy()/gets(). Flag is in secret_room() (buff3r_ + 0v3rfl0w + _4_b4rb13).</div>
+    </div>
+    <div class="answer-row">
+      <div class="qnum">20</div>
+      <div class="qtitle">Ken's Format String</div>
+      <div class="qflag">CTF{f0rm4t_str1ng_l34k}</div>
+      <div class="qhint">File: format_ken.c — Flag is char secret[] = "f0rm4t_str1ng_l34k". Bug: printf(user_input) instead of printf("%s", user_input).</div>
+    </div>
+  </div>
+
+  <p style="text-align:center;opacity:.6;font-size:.8rem;margin-top:1.5rem;padding-bottom:1rem">
+    Barbie's Cyber Dreamhouse CTF — Answer Key
+  </p>
+</div>
+
+<script>
+  const PASS_HASH = 'a5544ceb2f69ee61084ed92a6a7e1ed46b0d168b36aa49073274a9636bb431d7';
+
+  async function sha256hex(str) {
+    const buf = await crypto.subtle.digest(
+      'SHA-256',
+      new TextEncoder().encode(str)
+    );
+    return Array.from(new Uint8Array(buf))
+      .map(function(b){ return b.toString(16).padStart(2,'0'); })
+      .join('');
+  }
+
+  document.getElementById('pwd-submit').addEventListener('click', unlock);
+  document.getElementById('pwd-input').addEventListener('keydown', function(e){
+    if(e.key==='Enter') unlock();
+  });
+
+  async function unlock(){
+    const v = document.getElementById('pwd-input').value;
+    const h = await sha256hex(v);
+    if(h === PASS_HASH){
+      document.getElementById('lock-screen').style.display = 'none';
+      document.getElementById('key-page').style.display    = 'block';
+    } else {
+      const err = document.getElementById('err-msg');
+      err.textContent = '❌ Wrong password — try again.';
+      document.getElementById('pwd-input').select();
+      setTimeout(function(){ err.textContent=''; }, 2500);
+    }
+  }
+</script>
+</body>
+</html>

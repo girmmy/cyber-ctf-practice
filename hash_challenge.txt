@@ -1,0 +1,27 @@
+╔══════════════════════════════════════════╗
+║     BARBIE'S VAULT — HASH CHALLENGE      ║
+╚══════════════════════════════════════════╝
+
+A spy has intercepted Ken's vault password — but only as a hash!
+The vault door displays the following MD5 hash:
+
+  HASH (MD5): 2ed02e792f8ecd95b6570b687274afeb
+
+CLUES:
+  - The password is a shade of pink
+  - It is all lowercase, one word, no numbers or symbols
+  - Ken picked it because it was his "favorite color of pink"
+
+CHALLENGE:
+  Crack the hash to find the plaintext password.
+  Once cracked, wrap it in CTF{} to get the flag.
+
+  Example: if the password were "barbie", the flag is CTF{barbie}
+
+TOOLS THAT MAY HELP:
+  - Online hash databases: crackstation.net, hashes.com
+  - Hashcat:  hashcat -a 0 -m 0 <hash> wordlist.txt
+  - John:     john --format=raw-md5 hash.txt
+  - Or just think like Ken 💅
+
+Good luck!

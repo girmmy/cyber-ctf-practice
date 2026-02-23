@@ -1,0 +1,27 @@
+import java.util.*;
+
+class KensDreamhouseVault {
+
+    public static void main(String[] args) {
+        KensDreamhouseVault vault = new KensDreamhouseVault();
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter Barbie's vault password: ");
+        String userInput = scanner.next();
+        // Strip the CTF{} wrapper before checking
+        String input = userInput.substring("CTF{".length(), userInput.length() - 1);
+        if (vault.checkPassword(input)) {
+            System.out.println("Vault unlocked! Welcome to Barbie's Dreamhouse!");
+        } else {
+            System.out.println("Wrong password, Ken! You can't come in!");
+        }
+    }
+
+    // Note from Ken: I stored the password directly in the code so I wouldn't
+    // forget it. Is this a security problem? Asking for a friend.
+    // If someone got this file, could they figure out the password?
+    //
+    // - Ken #7749
+    public boolean checkPassword(String password) {
+        return password.equals("s0urc3_c0d3_1s_4n_0p3n_b00k");
+    }
+}

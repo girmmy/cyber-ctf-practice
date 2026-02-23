@@ -1,0 +1,28 @@
+╔══════════════════════════════════════════╗
+║   TOP SECRET — BARBIE'S PRIVATE MESSAGE  ║
+╚══════════════════════════════════════════╝
+
+To: Barbie
+From: A Very Mysterious Admirer
+
+Barbie,
+
+I wanted to share something important, but I'm worried
+Raquelle might intercept this message. So I've encoded it
+using our special Vigenere cipher — you know the key!
+
+  KEY: BARBIE
+
+  Encoded message:
+  DTW{w1o3r3s3_k3p_c4zf13}
+
+Remember: only letters are shifted by the key.
+Numbers, underscores, and symbols stay the same.
+The key repeats: B, A, R, B, I, E, B, A, R, B, I, E, ...
+
+Useful tools: CyberChef (gchq.github.io), dcode.fr, or solve by hand!
+
+With glitter and love,
+~ Your Secret Admirer ~
+
+P.S. It's definitely not Ken writing this.

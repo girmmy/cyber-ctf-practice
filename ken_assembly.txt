@@ -1,0 +1,45 @@
+; ═══════════════════════════════════════════════════
+;  KEN'S ASSEMBLY PUZZLE — Barbie's Cyber Dreamhouse
+; ═══════════════════════════════════════════════════
+;
+; Barbie found Ken's old computer in the garage.
+; It contains an assembly program he never finished.
+; Ken forgot what value the program outputs!
+;
+; YOUR CHALLENGE:
+;   Trace through the code below step by step.
+;   Figure out the decimal value stored in rax
+;   when PRINT is executed.
+;
+;   The flag is:  CTF{VALUE}
+;   where VALUE is that decimal number.
+;
+; NOTES:
+;   - All registers start at 0
+;   - MOV  dest, src   → copies src into dest
+;   - ADD  dest, src   → dest = dest + src
+;   - SUB  dest, src   → dest = dest - src
+;   - MUL  dest, val   → dest = dest * val
+;   - PUSH reg         → pushes reg value onto the stack
+;   - POP  reg         → pops top of stack into reg
+;   - PRINT reg        → outputs the value in reg
+;
+; ═══════════════════════════════════════════════════
+
+        MOV  rax, 10       ; rax = 10
+        MOV  rbx, 5        ; rbx = 5
+        ADD  rax, rbx      ; rax = rax + rbx
+        MOV  rcx, rax      ; rcx = rax  (save for later)
+        MOV  rax, 2        ; rax = 2
+        MUL  rax, rcx      ; rax = rax * rcx
+        SUB  rax, 4        ; rax = rax - 4
+        PUSH rax           ; push rax onto stack
+        MOV  rax, 100      ; rax = 100
+        POP  rbx           ; rbx = top of stack
+        ADD  rax, rbx      ; rax = rax + rbx
+        PRINT rax          ; <-- what decimal value is printed?
+
+; ═══════════════════════════════════════════════════
+; Show your work! Trace each line and keep a running
+; tally of each register's value.
+; ═══════════════════════════════════════════════════

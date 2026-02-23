@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Barbie's VIP Club — Members Only</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Georgia', serif;
+      background: linear-gradient(135deg, #1a0028 0%, #4b0057 100%);
+      min-height: 100vh; display: flex; align-items: center;
+      justify-content: center; color: white;
+    }
+    .container {
+      text-align: center; max-width: 520px; width: 90%;
+    }
+    .logo { font-size: 4rem; margin-bottom: 1rem; }
+    h1 { font-size: 1.8rem; color: #ff69b4; margin-bottom: .5rem; }
+    .subtitle { color: #da70d6; margin-bottom: 2rem; font-size: 1rem; }
+    .status-box {
+      background: rgba(255,255,255,.08); border: 2px solid #ff69b4;
+      border-radius: 1rem; padding: 2rem; margin-bottom: 1.5rem;
+    }
+    #status-text { font-size: 1.1rem; margin-bottom: 1rem; min-height: 1.5em; }
+    #flag-display {
+      display: none; background: rgba(255,105,180,.15);
+      border: 2px solid #ffd700; border-radius: .5rem;
+      padding: 1rem; margin-top: 1rem;
+      font-family: monospace; font-size: 1rem; color: #ffd700;
+      word-break: break-all;
+    }
+    button {
+      background: linear-gradient(135deg, #ff1493, #c71585);
+      color: white; border: none; padding: .75rem 2rem;
+      font-size: 1rem; border-radius: 2rem; cursor: pointer;
+      box-shadow: 0 4px 15px rgba(255,20,147,.4);
+      transition: transform .2s, box-shadow .2s;
+      margin: .4rem;
+    }
+    button:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(255,20,147,.6); }
+    .hint-box {
+      margin-top: 2rem; background: rgba(255,255,255,.05);
+      border-radius: .75rem; padding: 1.25rem;
+      border: 1px solid rgba(255,105,180,.3);
+    }
+    .hint-box h3 { color: #ff69b4; margin-bottom: .5rem; font-size: .95rem; }
+    .hint-box p  { font-size: .875rem; color: #ddd; line-height: 1.6; }
+    code {
+      background: rgba(255,255,255,.15); padding: .1rem .35rem;
+      border-radius: .25rem; font-family: monospace; color: #ffd700;
+    }
+    .step { text-align: left; margin: .3rem 0; font-size: .875rem; color: #eee; }
+    .step span { color: #ff69b4; font-weight: bold; }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="logo">💅</div>
+  <h1>Barbie's VIP Club</h1>
+  <p class="subtitle">Exclusive Members Only — Admission by Cookie Only</p>
+
+  <div class="status-box">
+    <div id="status-text">Checking your VIP status…</div>
+    <div id="flag-display"></div>
+    <button onclick="checkAccess()">✨ Check My VIP Status</button>
+  </div>
+
+  <div class="hint-box">
+    <h3>💡 Stuck? Here's how cookies work:</h3>
+    <p>
+      Websites use browser cookies to remember information about you.
+      You can view and set cookies using your browser's DevTools!
+    </p>
+    <br>
+    <div class="step"><span>Step 1:</span> Open DevTools → press <code>F12</code> or right-click → Inspect</div>
+    <div class="step"><span>Step 2:</span> Click the <code>Console</code> tab</div>
+    <div class="step"><span>Step 3:</span> Type this and press Enter:</div>
+    <br>
+    <code>document.cookie = "isAdmin=true"</code>
+    <br><br>
+    <div class="step"><span>Step 4:</span> Click "Check My VIP Status" again</div>
+    <br>
+    <p>Ken keeps saying only admins can enter the VIP area…</p>
+  </div>
+</div>
+
+<script>
+  function parseCookies() {
+    return document.cookie.split(';').reduce(function(acc, pair) {
+      var parts = pair.trim().split('=');
+      if (parts.length >= 2) acc[parts[0]] = parts.slice(1).join('=');
+      return acc;
+    }, {});
+  }
+
+  function checkAccess() {
+    var cookies = parseCookies();
+    var statusEl = document.getElementById('status-text');
+    var flagEl   = document.getElementById('flag-display');
+
+    if (cookies['isAdmin'] === 'true') {
+      statusEl.textContent = '🎉 VIP Access Granted! Welcome to the club!';
+      flagEl.style.display = 'block';
+      flagEl.textContent   = '🚩 Flag: CTF{c00k13s_4r3_sw33t_b4rb13}';
+    } else {
+      statusEl.textContent = '❌ Access Denied! You need the right cookie to enter.';
+      flagEl.style.display = 'none';
+    }
+  }
+
+  // Auto-check on load
+  window.addEventListener('load', checkAccess);
+</script>
+</body>
+</html>
