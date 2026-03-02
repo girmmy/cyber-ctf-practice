@@ -112,7 +112,7 @@ const QS = [
     desc:`Barbie's magic mirror encodes messages by reversing the entire alphabet —
     A↔Z, B↔Y, C↔X, and so on. This is called an <strong>Atbash cipher</strong>!<br><br>
     Decode this mirror-encoded message:<br><br>
-    <code>XGU{zgyzsh_rh_toznlilfh}</code><br><br>
+    <code>XGU{zgyzhs_rh_toznlilfh}</code><br><br>
     <strong>Hint:</strong> Each letter maps to its "mirror image" in the alphabet.
     Numbers and symbols stay the same.`,
     files:[],
